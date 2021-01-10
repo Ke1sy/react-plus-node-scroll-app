@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import React, {FC} from 'react';
+import {makeStyles, Theme} from '@material-ui/core/styles';
 import {AppBar, Tabs, Tab} from '@material-ui/core';
-import { SearchIcon, AccessTimeIcon } from '../Icons/MeterialIcons';
+import {SearchIcon, AccessTimeIcon} from '../Icons/MeterialIcons';
 import {SelectedTabType} from "../../types/types";
 
 function getTabProps(index: any) {
@@ -25,7 +25,7 @@ type ITabs = {
     type: 'recent' | 'search'
 }
 
-const TABS:ITabs[] = [
+const TABS: ITabs[] = [
     {
         id: 0,
         label: 'Recent',
@@ -43,13 +43,13 @@ interface IGalleryTabs {
     onChangeSelectedTab: (tab: SelectedTabType) => void,
 }
 
-const GalleryTabs:FC<IGalleryTabs> = ({onChangeSelectedTab}) => {
+const GalleryTabs: FC<IGalleryTabs> = ({onChangeSelectedTab}) => {
     const classes = useStyles();
     const [selectedTab, setSelectedTab] = React.useState(0);
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         const selectedTab = TABS.find(tab => tab.id === newValue);
-        if(selectedTab) {
+        if (selectedTab) {
             onChangeSelectedTab(selectedTab.type);
         }
         setSelectedTab(newValue);
@@ -66,7 +66,8 @@ const GalleryTabs:FC<IGalleryTabs> = ({onChangeSelectedTab}) => {
                     variant="fullWidth"
                     aria-label="gallery tabs"
                 >
-                    {TABS.map(({id, icon, label, type}) => <Tab key={type} icon={icon} label={label} {...getTabProps(id)} />)}
+                    {TABS.map(({id, icon, label, type}) => <Tab key={type} icon={icon}
+                                                                label={label} {...getTabProps(id)} />)}
                 </Tabs>
             </AppBar>
 

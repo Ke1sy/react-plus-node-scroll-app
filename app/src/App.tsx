@@ -17,11 +17,7 @@ const App = () => {
     const [appInited, setAppInited] = useState(false);
 
     useEffect(() => {
-        console.log('date: ' + date)
-    }, [date]);
-
-    useEffect(() => {
-        if(appInited) {
+        if (appInited) {
             setDate(Date.now());  // fix time to avoid duplicates while scrolling
             // (images are updating in real time and pages can be another in some seconds)
             // unfortunately only 'search' supports extra prop 'max_upload_date'
@@ -31,21 +27,17 @@ const App = () => {
     }, [selectedTab]);
 
     useEffect(() => {
-        if(appInited) {
+        if (appInited) {
             uploadMorePhotos(true, false, true)
         }
     }, [searchQuery]);
 
     useEffect(() => {
-        window.addEventListener("scroll", handleScroll);
         setAppInited(true);
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        }
     }, []);
 
     const uploadMorePhotos = async (resetPage = false, resetSearch = false, resetPhotos = false) => {
-        if(!isLastPage && !isLoading) {
+        if (!isLastPage && !isLoading) {
             const nextPage = resetPage ? 1 : page + 1;
             await requestImages({
                 type: selectedTab,
@@ -59,21 +51,21 @@ const App = () => {
     }
 
 
-    const requestImages = async (data: RequestPhotosType & {resetPhotos: boolean}) => {
+    const requestImages = async (data: RequestPhotosType & { resetPhotos: boolean }) => {
         try {
             setIsLoading(true);
 
-            if(!searchQuery && selectedTab === 'search') {
+            if (!searchQuery && selectedTab === 'search') {
                 setIsLastPage(false);
                 setPage(page);
                 setPhotoList([]);
             } else {
                 const {stat, photos} = await photosAPI.getPhotos(data);
 
-                if (stat === 'ok')  {
+                if (stat === 'ok') {
                     const {page, pages, photo} = photos;
 
-                    const newPhotos = selectedTab === 'recent' ? photo.filter((newArrElem:IPhotoType) => {
+                    const newPhotos = selectedTab === 'recent' ? photo.filter((newArrElem: IPhotoType) => {
                         return photoList.filter((listArrElem) => {
                             return listArrElem.id === newArrElem.id;
                         }).length === 0
@@ -81,48 +73,43 @@ const App = () => {
 
                     setIsLastPage(page === pages);
                     setPage(page);
-                    setPhotoList(data.resetPhotos ? [...photo] :  [...photoList, ...newPhotos]);
+                    setPhotoList(data.resetPhotos ? [...photo] : [...photoList, ...newPhotos]);
                 }
             }
 
-        }
-        catch (e) {
+        } catch (e) {
             console.error(e);
         } finally {
             setIsLoading(false)
         }
     };
 
-    const handleTabChange  = (tab: SelectedTabType) => {
+    const handleTabChange = (tab: SelectedTabType) => {
         setSelectedTab(tab)
     }
 
-    const handleScroll = (e: any) => {
-        console.log('scroll event')
-    }
-
-    const emptySearch =  !searchQuery && selectedTab === 'search';
+    const emptySearch = !searchQuery && selectedTab === 'search';
 
     return (
-            <>
-                <Header/>
-                <Main>
-                    <Gallery
-                        images={photoList}
-                        selectedTab={selectedTab}
-                        onChangeSelectedTab={(tab: SelectedTabType) => handleTabChange(tab)}
-                        onChangeSearchQuery={(value: string) => setSearchQuery(value)}
-                    />
+        <>
+            <Header/>
+            <Main>
+                <Gallery
+                    images={photoList}
+                    selectedTab={selectedTab}
+                    onChangeSelectedTab={(tab: SelectedTabType) => handleTabChange(tab)}
+                    onChangeSearchQuery={(value: string) => setSearchQuery(value)}
+                />
 
-                    {!isLastPage && <Preloader
-                      visible={!emptySearch}
-                      onBecomeVisible={() => uploadMorePhotos()}
-                    />
-                    }
+                {!isLastPage && <Preloader
+                  visible={!emptySearch}
+                  onBecomeVisible={() => uploadMorePhotos()}
+                />
+                }
 
-                </Main>
-            </>
-        );
+            </Main>
+        </>
+    );
 };
 
 export default App;

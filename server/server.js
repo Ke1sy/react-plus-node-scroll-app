@@ -7,14 +7,10 @@ const PORT = process.env.PORT || 3005;
 const path = require('path');
 
 const FLICKR_API_KEY = '0c5bd959ac8c825db5c9e07adaaa147c';
-const FLICKR_API_SECRET = '5a2cf712825ca8fe';
 
 const flickr = new Flickr(FLICKR_API_KEY);
 
-// app.use(express.static('public'));
-
 app.use(express.static('public'));
-
 
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -46,17 +42,6 @@ app.get('/api/photos', (req, res) => {
       console.error('Type not defined')
 
   }
-
-  // flickr.photos.getRecent({per_page: 10, page})
-  //   .then(function (result) {
-  //     // res.setHeader('Content-Type', 'application/json');
-  //     // res.send(JSON.stringify({ response: res.body }));
-  //     returnResult(result.body);
-  //
-  //     console.log('success');
-  //   }).catch(function (err) {
-  //   console.error('error: ', err);
-  // });
 });
 
 app.get('/*', (req, res) => {

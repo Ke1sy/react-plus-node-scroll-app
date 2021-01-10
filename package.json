@@ -8,7 +8,7 @@
     "server": "nodemon server/server.js",
     "client": "npm start --prefix app",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "deploy": "git push heroku master"
+    "deploy": "git push heroku main"
   },
   "author": "",
   "license": "ISC",

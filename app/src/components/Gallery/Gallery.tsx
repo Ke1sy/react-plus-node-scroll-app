@@ -12,24 +12,24 @@ interface IGallery {
     selectedTab: SelectedTabType
 }
 
-const Gallery:FC<IGallery> = ({images, selectedTab, onChangeSelectedTab, onChangeSearchQuery}) => {
+const Gallery: FC<IGallery> = ({images, selectedTab, onChangeSelectedTab, onChangeSearchQuery}) => {
     return (
         <Container maxWidth="lg">
             <GalleryTabs onChangeSelectedTab={onChangeSelectedTab}/>
 
             {selectedTab === 'search' &&
-                <Search
-                  placeholder="Search for cats..."
-                  liveSearch={true}
-                  searchAction={onChangeSearchQuery}
-                />
+            <Search
+              placeholder="Search for cats..."
+              liveSearch={true}
+              searchAction={onChangeSearchQuery}
+            />
             }
 
             <Grid container spacing={2}>
-                {images.map((photo:IPhotoType) => (
-                  <Grid item xs={12} md={6} key={photo.id}>
-                    <Image photo={photo}/>
-                  </Grid>
+                {images.map((photo: IPhotoType) => (
+                    <Grid item xs={12} md={6} key={photo.id}>
+                        <Image photo={photo}/>
+                    </Grid>
                 ))}
             </Grid>
         </Container>
